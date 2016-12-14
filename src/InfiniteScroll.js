@@ -80,7 +80,12 @@ export default class InfiniteScroll extends Component {
         const scrollEl = window;
 
         let offset;
-        if(this.props.useWindow) {
+        if(this.props.scrollElement) {
+            if (this.props.isReverse) {
+                //TODO: reverse??
+            } else
+                offset = el.clientHeight - el.scrollTop;
+        } else if(this.props.useWindow) {
             var scrollTop = (scrollEl.pageYOffset !== undefined) ? scrollEl.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
             if (this.props.isReverse)
                 offset = scrollTop;
@@ -108,7 +113,9 @@ export default class InfiniteScroll extends Component {
         }
 
         let scrollEl = window;
-        if(this.props.useWindow == false) {
+        if(this.props.scrollElement) {
+            scrollEl = this.scrollComponent;
+        } else if(this.props.useWindow == false) {
             scrollEl = this.scrollComponent.parentNode;
         }
 
@@ -122,7 +129,9 @@ export default class InfiniteScroll extends Component {
 
     detachScrollListener() {
         var scrollEl = window;
-        if(this.props.useWindow == false) {
+        if(this.props.scrollElement) {
+            scrollEl = this.scrollComponent;
+        } else if(this.props.useWindow == false) {
             scrollEl = this.scrollComponent.parentNode;
         }
 

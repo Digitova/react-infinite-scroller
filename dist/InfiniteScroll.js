@@ -89,7 +89,11 @@ var InfiniteScroll = function (_Component) {
             var scrollEl = window;
 
             var offset = void 0;
-            if (this.props.useWindow) {
+            if (this.props.scrollElement) {
+                if (this.props.isReverse) {
+                    //TODO: reverse??
+                } else offset = el.clientHeight - el.scrollTop;
+            } else if (this.props.useWindow) {
                 var scrollTop = scrollEl.pageYOffset !== undefined ? scrollEl.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
                 if (this.props.isReverse) offset = scrollTop;else offset = this.calculateTopPosition(el) + el.offsetHeight - scrollTop - window.innerHeight;
             } else {
@@ -112,7 +116,9 @@ var InfiniteScroll = function (_Component) {
             }
 
             var scrollEl = window;
-            if (this.props.useWindow == false) {
+            if (this.props.scrollElement) {
+                scrollEl = this.scrollComponent;
+            } else if (this.props.useWindow == false) {
                 scrollEl = this.scrollComponent.parentNode;
             }
 
@@ -127,7 +133,9 @@ var InfiniteScroll = function (_Component) {
         key: 'detachScrollListener',
         value: function detachScrollListener() {
             var scrollEl = window;
-            if (this.props.useWindow == false) {
+            if (this.props.scrollElement) {
+                scrollEl = this.scrollComponent;
+            } else if (this.props.useWindow == false) {
                 scrollEl = this.scrollComponent.parentNode;
             }
 
