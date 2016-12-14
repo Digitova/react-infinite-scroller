@@ -49,10 +49,21 @@ export default class InfiniteScroll extends Component {
             threshold,
             useWindow,
             isReverse,
+            scrollElement,
             ...props
         } = this.props;
 
-        props.ref = (node) => { this.scrollComponent = node; };
+        if(scrollElement) {
+            props.ref = (node) => {
+                console.log('setting ref to scroll element');
+                this.scrollComponent = scrollElement;
+            };
+        } else {
+            props.ref = (node) => {
+                console.log('setting ref by call');
+                this.scrollComponent = node;
+            };
+        }
 
         return React.createElement(element, props, children, hasMore && (loader || this._defaultLoader));
     }
@@ -122,7 +133,7 @@ export default class InfiniteScroll extends Component {
     componentWillUnmount() {
         this.detachScrollListener();
     }
-    
+
     // Set a defaut loader for all your `InfiniteScroll` components
     setDefaultLoader(loader) {
         this._defaultLoader = loader;
