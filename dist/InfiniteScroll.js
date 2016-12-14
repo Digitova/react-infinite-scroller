@@ -64,12 +64,10 @@ var InfiniteScroll = function (_Component) {
 
             if (scrollElement) {
                 props.ref = function (node) {
-                    console.log('setting ref to scroll element');
                     _this2.scrollComponent = scrollElement;
                 };
             } else {
                 props.ref = function (node) {
-                    console.log('setting ref by call');
                     _this2.scrollComponent = node;
                 };
             }
@@ -163,7 +161,7 @@ InfiniteScroll.propTypes = {
     threshold: _react.PropTypes.number,
     useWindow: _react.PropTypes.bool,
     isReverse: _react.PropTypes.bool,
-    scrollElement: _react.PropTypes.element
+    scrollElement: _react.PropTypes.object
 };
 InfiniteScroll.defaultProps = {
     element: 'div',
