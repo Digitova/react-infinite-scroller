@@ -59,15 +59,22 @@ var InfiniteScroll = function (_Component) {
                 threshold = _props.threshold,
                 useWindow = _props.useWindow,
                 isReverse = _props.isReverse,
-                props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'loader', 'loadMore', 'pageStart', 'threshold', 'useWindow', 'isReverse']);
+                scrollElement = _props.scrollElement,
+                props = _objectWithoutProperties(_props, ['children', 'element', 'hasMore', 'initialLoad', 'loader', 'loadMore', 'pageStart', 'threshold', 'useWindow', 'isReverse', 'scrollElement']);
 
-            var ref = function ref(node) {
-                _this2.scrollComponent = node;
-            };
+            if (scrollElement) {
+                props.ref = function (node) {
+                    console.log('setting ref to scroll element');
+                    _this2.scrollComponent = scrollElement;
+                };
+            } else {
+                props.ref = function (node) {
+                    console.log('setting ref by call');
+                    _this2.scrollComponent = node;
+                };
+            }
 
-            return _react2.default.createElement(element, {
-                ref: ref
-            }, children);
+            return _react2.default.createElement(element, props, children, hasMore && (loader || this._defaultLoader));
         }
     }, {
         key: 'calculateTopPosition',
@@ -123,7 +130,7 @@ var InfiniteScroll = function (_Component) {
         value: function detachScrollListener() {
             var scrollEl = window;
             if (this.props.useWindow == false) {
-                scrollEl = ReactDOM.findDOMNode(this).parentNode;
+                scrollEl = this.scrollComponent.parentNode;
             }
 
             scrollEl.removeEventListener('scroll', this.scrollListener);
@@ -155,7 +162,8 @@ InfiniteScroll.propTypes = {
     pageStart: _react.PropTypes.number,
     threshold: _react.PropTypes.number,
     useWindow: _react.PropTypes.bool,
-    isReverse: _react.PropTypes.bool
+    isReverse: _react.PropTypes.bool,
+    scrollElement: _react.PropTypes.element
 };
 InfiniteScroll.defaultProps = {
     element: 'div',
@@ -164,7 +172,8 @@ InfiniteScroll.defaultProps = {
     pageStart: 0,
     threshold: 250,
     useWindow: true,
-    isReverse: false
+    isReverse: false,
+    scrollElement: null
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];
