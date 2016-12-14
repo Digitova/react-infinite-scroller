@@ -10,7 +10,7 @@ export default class InfiniteScroll extends Component {
         threshold: PropTypes.number,
         useWindow: PropTypes.bool,
         isReverse: PropTypes.bool,
-        scrollElement: PropTypes.element
+        scrollElement: PropTypes.object
     };
 
     static defaultProps = {
@@ -57,12 +57,10 @@ export default class InfiniteScroll extends Component {
 
         if(scrollElement) {
             props.ref = (node) => {
-                console.log('setting ref to scroll element');
                 this.scrollComponent = scrollElement;
             };
         } else {
             props.ref = (node) => {
-                console.log('setting ref by call');
                 this.scrollComponent = node;
             };
         }
