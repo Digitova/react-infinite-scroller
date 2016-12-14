@@ -9,7 +9,8 @@ export default class InfiniteScroll extends Component {
         pageStart: PropTypes.number,
         threshold: PropTypes.number,
         useWindow: PropTypes.bool,
-        isReverse: PropTypes.bool
+        isReverse: PropTypes.bool,
+        scrollElement: PropTypes.element
     };
 
     static defaultProps = {
@@ -19,7 +20,8 @@ export default class InfiniteScroll extends Component {
         pageStart: 0,
         threshold: 250,
         useWindow: true,
-        isReverse: false
+        isReverse: false,
+        scrollElement: null
     };
 
     constructor(props) {
