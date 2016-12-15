@@ -91,7 +91,7 @@ var InfiniteScroll = function (_Component) {
             var offset = void 0;
             if (this.props.scrollElement) {
                 if (this.props.isReverse) {
-                    offset = ek.scrollTop;
+                    offset = el.scrollTop;
                 } else offset = el.scrollHeight - el.scrollTop - el.clientHeight;
             } else if (this.props.useWindow) {
                 var scrollTop = scrollEl.pageYOffset !== undefined ? scrollEl.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
