@@ -82,7 +82,7 @@ export default class InfiniteScroll extends Component {
         let offset;
         if(this.props.scrollElement) {
             if (this.props.isReverse) {
-                //TODO: reverse??
+                offset = ek.scrollTop;
             } else
                 offset = el.clientHeight - el.scrollTop;
         } else if(this.props.useWindow) {
