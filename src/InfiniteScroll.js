@@ -15,6 +15,7 @@ export default class InfiniteScroll extends Component {
     threshold: PropTypes.number,
     useCapture: PropTypes.bool,
     useWindow: PropTypes.bool,
+    scrollElement: PropTypes.object,
   };
 
   static defaultProps = {
@@ -28,6 +29,7 @@ export default class InfiniteScroll extends Component {
     isReverse: false,
     useCapture: false,
     loader: null,
+    scrollElement: null,
   };
 
   constructor(props) {
@@ -57,6 +59,7 @@ export default class InfiniteScroll extends Component {
 
   detachMousewheelListener() {
     let scrollEl = window;
+
     if (this.props.useWindow === false) {
       scrollEl = this.scrollComponent.parentNode;
     }
@@ -70,7 +73,9 @@ export default class InfiniteScroll extends Component {
 
   detachScrollListener() {
     let scrollEl = window;
-    if (this.props.useWindow === false) {
+    if (this.props.scrollElement) {
+      scrollEl = this.scrollComponent;
+    } else if (this.props.useWindow === false) {
       scrollEl = this.scrollComponent.parentNode;
     }
 
@@ -92,7 +97,10 @@ export default class InfiniteScroll extends Component {
     }
 
     let scrollEl = window;
-    if (this.props.useWindow === false) {
+
+    if (this.props.scrollElement) {
+      scrollEl = this.scrollComponent;
+    } else if (this.props.useWindow === false) {
       scrollEl = this.scrollComponent.parentNode;
     }
 
@@ -130,7 +138,13 @@ export default class InfiniteScroll extends Component {
     const scrollEl = window;
 
     let offset;
-    if (this.props.useWindow) {
+    if (this.props.scrollElement) {
+      if (this.props.isReverse) {
+        offset = el.scrollTop;
+      } else {
+        offset = el.scrollHeight - el.scrollTop - el.clientHeight;
+      }
+    } else if (this.props.useWindow) {
       const doc =
         document.documentElement || document.body.parentNode || document.body;
       const scrollTop =
@@ -181,13 +195,18 @@ export default class InfiniteScroll extends Component {
       threshold,
       useCapture,
       useWindow,
+      scrollElement,
       ...props
     } = this.props;
 
     props.ref = node => {
-      this.scrollComponent = node;
+      if (scrollElement) {
+        this.scrollComponent = scrollElement;
+      } else {
+        this.scrollComponent = node;
+      }
       if (ref) {
-        ref(node);
+        ref(this.scrollComponent);
       }
     };
 

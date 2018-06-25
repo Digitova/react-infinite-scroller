@@ -132,6 +132,7 @@ var InfiniteScroll = (function(_Component) {
       key: 'detachMousewheelListener',
       value: function detachMousewheelListener() {
         var scrollEl = window;
+
         if (this.props.useWindow === false) {
           scrollEl = this.scrollComponent.parentNode;
         }
@@ -147,7 +148,9 @@ var InfiniteScroll = (function(_Component) {
       key: 'detachScrollListener',
       value: function detachScrollListener() {
         var scrollEl = window;
-        if (this.props.useWindow === false) {
+        if (this.props.scrollElement) {
+          scrollEl = this.scrollComponent;
+        } else if (this.props.useWindow === false) {
           scrollEl = this.scrollComponent.parentNode;
         }
 
@@ -171,7 +174,10 @@ var InfiniteScroll = (function(_Component) {
         }
 
         var scrollEl = window;
-        if (this.props.useWindow === false) {
+
+        if (this.props.scrollElement) {
+          scrollEl = this.scrollComponent;
+        } else if (this.props.useWindow === false) {
           scrollEl = this.scrollComponent.parentNode;
         }
 
@@ -213,7 +219,13 @@ var InfiniteScroll = (function(_Component) {
         var scrollEl = window;
 
         var offset = void 0;
-        if (this.props.useWindow) {
+        if (this.props.scrollElement) {
+          if (this.props.isReverse) {
+            offset = el.scrollTop;
+          } else {
+            offset = el.scrollHeight - el.scrollTop - el.clientHeight;
+          }
+        } else if (this.props.useWindow) {
           var doc =
             document.documentElement ||
             document.body.parentNode ||
@@ -274,6 +286,7 @@ var InfiniteScroll = (function(_Component) {
           threshold = _props.threshold,
           useCapture = _props.useCapture,
           useWindow = _props.useWindow,
+          scrollElement = _props.scrollElement,
           props = _objectWithoutProperties(_props, [
             'children',
             'element',
@@ -287,12 +300,17 @@ var InfiniteScroll = (function(_Component) {
             'threshold',
             'useCapture',
             'useWindow',
+            'scrollElement',
           ]);
 
         props.ref = function(node) {
-          _this2.scrollComponent = node;
+          if (scrollElement) {
+            _this2.scrollComponent = scrollElement;
+          } else {
+            _this2.scrollComponent = node;
+          }
           if (ref) {
-            ref(node);
+            ref(_this2.scrollComponent);
           }
         };
 
@@ -329,6 +347,7 @@ InfiniteScroll.propTypes = {
   threshold: _propTypes2.default.number,
   useCapture: _propTypes2.default.bool,
   useWindow: _propTypes2.default.bool,
+  scrollElement: _propTypes2.default.object,
 };
 InfiniteScroll.defaultProps = {
   element: 'div',
@@ -341,6 +360,7 @@ InfiniteScroll.defaultProps = {
   isReverse: false,
   useCapture: false,
   loader: null,
+  scrollElement: null,
 };
 exports.default = InfiniteScroll;
 module.exports = exports['default'];
